@@ -14,30 +14,29 @@ class ClasskNN:
     def predict(self, lista_z_obiektami):
         gotowe_etykiety = []
         for y in range(len(lista_z_obiektami)):
+
             wszystkie_odleglosci = []
             for x in range(len(self.baza_danych)):
-                #print(self.baza_danych_bez_etykiet[x])
-                #print(lista_z_obiektami[0])
                 odleglosc = sp.distance.euclidean(self.baza_danych_bez_etykiet[x], lista_z_obiektami[y])
                 wszystkie_odleglosci.append([odleglosc,self.baza_danych[x][self.numer_kolumny_etykiet]])
 
-            self.sortuj(wszystkie_odleglosci)
-            #print(wszystkie_odleglosci)
-
             najblizsze_etykiety = []
+            self.sortuj(wszystkie_odleglosci)
+            # print(wszystkie_odleglosci)
             for x in range(self.k):
                 najblizsze_etykiety.append(wszystkie_odleglosci[x][1])
             #print(najblizsze_etykiety)
 
-            ktorej_etykity_najwiecej = {}
+            ktorej_etykiety_najwiecej = {}
             for x in range(self.k):
-                if najblizsze_etykiety[x] in ktorej_etykity_najwiecej:
-                    ktorej_etykity_najwiecej[najblizsze_etykiety[x]] += 1
+                if najblizsze_etykiety[x] in ktorej_etykiety_najwiecej:
+                    ktorej_etykiety_najwiecej[najblizsze_etykiety[x]] += 1
                 else:
-                    ktorej_etykity_najwiecej[najblizsze_etykiety[x]] = 1
-            #print(ktorej_etykity_najwiecej)
-            posortowane_etykiety = sorted(ktorej_etykity_najwiecej, key=ktorej_etykity_najwiecej.get, reverse=True)
+                    ktorej_etykiety_najwiecej[najblizsze_etykiety[x]] = 1
+            #print(ktorej_etykiety_najwiecej)
+            posortowane_etykiety = sorted(ktorej_etykiety_najwiecej, key=ktorej_etykiety_najwiecej.get, reverse=True)
             #print(posortowane_etykiety)
+
             gotowe_etykiety.append(posortowane_etykiety[0])
 
         return gotowe_etykiety
@@ -53,13 +52,14 @@ class ClasskNN:
                     do_sortowania[j][1], do_sortowania[j + 1][1] = do_sortowania[j + 1][1], do_sortowania[j][1]
         return do_sortowania
 
+
 listaUczaca = np.array(pd.read_csv("data-learning.csv", header=None))
 listaTestujaca = np.array(pd.read_csv("data-test.csv", header=None))
 
 #listaUczacaBezEtykiet = np.delete(listaUczaca, len(listaUczaca[0])-1, axis=1)
 listaTestujacaBezEtykiet = np.delete(listaTestujaca, len(listaTestujaca[0])-1, axis=1)
 
-ai = ClasskNN(81, listaUczaca)
+ai = ClasskNN(3, listaUczaca)
 print(ai.predict(listaTestujacaBezEtykiet))
 
 #print(sp.distance.euclidean(listaUczacaBezEtykiet[0], listaUczacaBezEtykiet[1]))
