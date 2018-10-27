@@ -1,26 +1,65 @@
 import numpy as np
 import pandas as pd
 import scipy.spatial as sp
+import operator
 
 
 class ClasskNN:
-    def __init__(self, k, lista_uczaca):
+    def __init__(self, k, baza_danych):
         self.k = k
-        self.lista_uczaca = lista_uczaca
+        self.baza_danych = baza_danych
+        self.baza_danych_bez_etykiet = np.delete(baza_danych, len(listaTestujaca[0])-1, axis=1)
+        self.numer_kolumny_etykiet = len(baza_danych[0])-1
 
     def predict(self, lista_z_obiektami):
-        return ""
+        gotowe_etykiety = []
+        for y in range(len(lista_z_obiektami)):
+            wszystkie_odleglosci = []
+            for x in range(len(self.baza_danych)):
+                #print(self.baza_danych_bez_etykiet[x])
+                #print(lista_z_obiektami[0])
+                odleglosc = sp.distance.euclidean(self.baza_danych_bez_etykiet[x], lista_z_obiektami[y])
+                wszystkie_odleglosci.append([odleglosc,self.baza_danych[x][self.numer_kolumny_etykiet]])
+
+            self.sortuj(wszystkie_odleglosci)
+            #print(wszystkie_odleglosci)
+
+            najblizsze_etykiety = []
+            for x in range(self.k):
+                najblizsze_etykiety.append(wszystkie_odleglosci[x][1])
+            #print(najblizsze_etykiety)
+
+            ktorej_etykity_najwiecej = {}
+            for x in range(self.k):
+                if najblizsze_etykiety[x] in ktorej_etykity_najwiecej:
+                    ktorej_etykity_najwiecej[najblizsze_etykiety[x]] += 1
+                else:
+                    ktorej_etykity_najwiecej[najblizsze_etykiety[x]] = 1
+            #print(ktorej_etykity_najwiecej)
+            posortowane_etykiety = sorted(ktorej_etykity_najwiecej, key=ktorej_etykity_najwiecej.get, reverse=True)
+            #print(posortowane_etykiety)
+            gotowe_etykiety.append(posortowane_etykiety[0])
+
+        return gotowe_etykiety
 
     def score(self, lista_z_obiektami, lista_etykiet):
         return ""
 
+    def sortuj(self, do_sortowania):
+        for i in range(len(do_sortowania) - 1, 0, -1):
+            for j in range(i):
+                if do_sortowania[j][0] > do_sortowania[j + 1][0]:
+                    do_sortowania[j][0], do_sortowania[j + 1][0] = do_sortowania[j + 1][0], do_sortowania[j][0]
+                    do_sortowania[j][1], do_sortowania[j + 1][1] = do_sortowania[j + 1][1], do_sortowania[j][1]
+        return do_sortowania
 
 listaUczaca = np.array(pd.read_csv("data-learning.csv", header=None))
 listaTestujaca = np.array(pd.read_csv("data-test.csv", header=None))
 
-listaUczacaBezEtykiet = np.delete(listaUczaca, len(listaUczaca[0])-1, axis=1)
+#listaUczacaBezEtykiet = np.delete(listaUczaca, len(listaUczaca[0])-1, axis=1)
 listaTestujacaBezEtykiet = np.delete(listaTestujaca, len(listaTestujaca[0])-1, axis=1)
 
-#print(sp.distance.euclidean(listaUczaca[0], listaTestujaca[0]))
+ai = ClasskNN(81, listaUczaca)
+print(ai.predict(listaTestujacaBezEtykiet))
 
-artificialIntelligence = ClasskNN(3, listaUczaca)
+#print(sp.distance.euclidean(listaUczacaBezEtykiet[0], listaUczacaBezEtykiet[1]))
