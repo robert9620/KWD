@@ -5,10 +5,13 @@ import operator
 
 class KNN:
     def __init__(self, k, baza_danych):
+        if k > len(baza_danych):
+            print("za duze k dlatego zmniejszam do maksymalnego mozliwego")
+            k = len(baza_danych);
         self.k = k
         self.baza_danych = baza_danych
-        self.baza_danych_bez_etykiet = np.delete(baza_danych, len(baza_danych[0])-1, axis=1)
-        self.numer_kolumny_etykiet = len(baza_danych[0])-1
+        self.baza_danych_bez_etykiet = np.delete(baza_danych, len(baza_danych[0]) - 1, axis=1)
+        self.numer_kolumny_etykiet = len(baza_danych[0]) - 1
 
     def predict(self, lista_z_obiektami):
         gotowe_etykiety = []
