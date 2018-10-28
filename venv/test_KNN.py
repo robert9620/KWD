@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+
 from KNN import KNN
 
 listaUczaca = np.array([[3, 4, 1, 2, 'A'], [6, 8, 5, 4, 'B'], [6, 9, 7, 5, 'B'], [2, 3, 1, 2, 'A'], [5, 4, 8, 9, 'B'], [8, 8, 8, 9, 'B'], [9, 7, 5, 9, 'B'], [1, 2, 3, 4, 'A']],  dtype=np.dtype(object))
@@ -17,6 +18,7 @@ class TestKNN(unittest.TestCase):
         self.assertEqual(ai.predict(listaTestujacaBezEtykiet), poprawnyWynikAlgorytmu)
     def test_score(self):
         self.assertEqual(ai.score(listaTestujacaBezEtykiet, etykietyListyTestujacej), str(skutecznoscAlgorytmu))
+
 
 if __name__ == '__main__':
     unittest.main()

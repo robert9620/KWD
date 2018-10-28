@@ -21,10 +21,8 @@ class KNN:
 
             najblizsze_etykiety = []
             self.sortuj(wszystkie_odleglosci)
-            # print(wszystkie_odleglosci)
             for x in range(self.k):
                 najblizsze_etykiety.append(wszystkie_odleglosci[x][1])
-            #print(najblizsze_etykiety)
 
             ktorej_etykiety_najwiecej = {}
             for x in range(self.k):
@@ -32,9 +30,7 @@ class KNN:
                     ktorej_etykiety_najwiecej[najblizsze_etykiety[x]] += 1
                 else:
                     ktorej_etykiety_najwiecej[najblizsze_etykiety[x]] = 1
-            #print(ktorej_etykiety_najwiecej)
             posortowane_etykiety = sorted(ktorej_etykiety_najwiecej, key=ktorej_etykiety_najwiecej.get, reverse=True)
-            #print(posortowane_etykiety)
 
             gotowe_etykiety.append(posortowane_etykiety[0])
 
