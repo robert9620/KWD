@@ -33,7 +33,6 @@ class KNN:
             posortowane_etykiety = sorted(ktorej_etykiety_najwiecej, key=ktorej_etykiety_najwiecej.get, reverse=True)
 
             gotowe_etykiety.append(posortowane_etykiety[0])
-
         return gotowe_etykiety
 
     def score(self, lista_z_obiektami, lista_etykiet):

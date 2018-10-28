@@ -16,6 +16,7 @@ ai = KNN(3, listaUczaca)
 class TestKNN(unittest.TestCase):
     def test_predict(self):
         self.assertEqual(ai.predict(listaTestujacaBezEtykiet), poprawnyWynikAlgorytmu)
+
     def test_score(self):
         self.assertEqual(ai.score(listaTestujacaBezEtykiet, etykietyListyTestujacej), str(skutecznoscAlgorytmu))
 
